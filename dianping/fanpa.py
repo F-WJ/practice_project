@@ -44,7 +44,7 @@ def get_svg(css_url):
     r = requests.get(svg_url, headers=headers)
     content = r.content.decode("utf-8")
     print(content)
-    matched = re.search(r'.*?>(\d+)</text>', content)
+    matched = re.search(r'.*? y="131">(\d+)</text>', content)
     if not matched:
         raise Exception("cannot find digits")
     digits = list(matched.group(1))
@@ -53,12 +53,18 @@ def get_svg(css_url):
 def get_class_offset(css_url):
     r = requests.get(css_url, headers=headers)
     content = r.content.decode("utf-8")
-    matched = re.findall(r'(\.[a-zA-Z0-9-]+)\{background:(\-\d+\.\d+)px', content)
+    matched = re.findall(r'(\.[a-zA-Z0-9-]+)\{background:(\-\d+\.\d+)px (\-\d+\.\d+)px', content)
     result = {}
     for item in matched:
         css_class = item[0][1:]
-        offset = item[1]
-        result[css_class] = offset
+        if re.match(r'xwu.*?', css_class) and item[2] == '-107.0':
+            offset = float(item[1])
+            result[css_class] = offset
+
+    
+    result = sorted(result.items(), key= lambda item:item[1], reverse=True)   
+    
+    print(result)
     return result
     
 def get_review_num(page_url, class_offset, digits):
@@ -78,9 +84,16 @@ def get_review_num(page_url, class_offset, digits):
             num = num * 10 + int(review_num_node.text)
         for digit_node in review_num_node:
             css_class = digit_node.attrib["class"]
-            offset = class_offset[css_class]
-            index = int((float(offset)+7)/-12)
-            digit = int(digits[index])
+
+            # 20个偏移量 对战 图片20个数字
+            b = 0
+            for a in class_offset:
+                if a[0] != css_class:
+                    b = b + 1
+                else:
+                    break
+            digit = int(digits[b])
+
             num = num * 10 + digit
         last_digit = review_num_node[-1].tail
         if last_digit:
