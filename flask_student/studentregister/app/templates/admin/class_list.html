@@ -1,0 +1,116 @@
+{% extends "admin/admin.html" %}
+
+
+{% block content %}
+<section class="content-header">
+    <h1>信息登记系统</h1>
+    <ol class="breadcrumb">
+        <li><a href="{{ url_for('admin.class_list') }}"><i class="fa fa-dashboard"></i> 班级管理</a></li>
+        <li class="active">班级列表</li>
+    </ol>
+</section>
+<section class="content" id="showcontent1">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">保存信息</h3>
+                </div>
+                <form role="form" method="post">
+                    <!--弹出信息框-->
+                    {% for msg in get_flashed_messages(category_filter=["ok"]) %}
+                    <div class="alert alert-success alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-check"></i> 操作成功</h4>
+                        {{ msg }}
+                    </div>
+                    {% endfor %}
+                    {% for msg in get_flashed_messages(category_filter=["err"]) %}
+                    <div class="alert alert-danger alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                        <h4><i class="icon fa fa-ban"></i> 操作失败</h4>
+                        {{ msg }}
+                    </div>
+                    {% endfor %}
+                    <div class="box-body">
+                        <div class="form-group">
+                            <label for="input_name">{{ form.class_name.label }}</label>
+                            {{ form.class_name }}
+                            {% for err in form.class_name.errors %}
+                            <div class="col-md-12">
+                                <font style="color:red">{{ err }}</font>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="box-footer">
+                        {{ form.Download }}
+                        {{ form.csrf_token }}
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="content" id="showcontent2">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box box-primary">
+                <div class="box-header">
+
+
+                    <h3 class="box-title">班级列表</h3>
+                    <div class="box-tools">
+                        <div class="input-group input-group-sm" style="width: 150px;">
+                            <input type="text" name="table_search" class="form-control pull-right"
+                                   placeholder="请输入关键字...">
+
+                            <div class="input-group-btn">
+                                <button type="submit" class="btn btn-default"><i class="fa fa-search"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="box-body table-responsive no-padding">
+                    <table class="table table-hover">
+                        <tbody>
+                        <tr>
+                            <th>班级</th>
+                            <th>操作</th>
+                            <!--<th>添加时间</th>-->
+                            <!--<th>事项</th>-->
+                        </tr>
+                        {% for v in class_name %}
+                        <tr>
+                            <!--<td>{{ v.id }}</td>-->
+                            <!--<td>{{ v.name }}</td>-->
+                            <td>{{ v }}</td>
+                            <td>
+                                <a href="{{ url_for('admin.file_download', fileName= v) }}" class="label label-success">下载</a>
+                                &nbsp;
+                                <a href="{{ url_for('admin.file_delete', fileName = v) }}" class="label label-danger">删除</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="box-footer clearfix">
+                    <!--分页-->
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block js %}
+<script>
+    $(document).ready(function () {
+        $("#g-2").addClass("active");
+        $("#g-2-2").addClass("active");
+    });
+</script>
+{% endblock %}

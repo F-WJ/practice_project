@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <!--<link rel="stylesheet" href="/static/css/style.css">-->
+    <link rel="shortcut icon" href="{{ url_for('static', filename='base/images/logo.png') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='admin/bootstrap/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='fonts/css/font-awesome.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='ionicons/css/ionicons.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='admin/dist/css/AdminLTE.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='admin/dist/css/skins/_all-skins.min.css') }}">
+    <link rel="stylesheet" type="text/css"
+          href="{{ url_for('static', filename='admin/plugins/datepicker/datepicker3.css') }}">
+    <style>
+        .smart-green {
+            margin-left: auto;
+            margin-right: auto;
+            max-width: 500px;
+            background: #F8F8F8;
+            padding: 30px 30px 20px 30px;
+            font: 12px Arial, Helvetica, sans-serif;
+            color: #666;
+            border-radius: 5px;
+            -webkit-border-radius: 5px;
+            -moz-border-radius: 5px;
+        }
+
+        .smart-green h1 {
+            font: 24px "Trebuchet MS", Arial, Helvetica, sans-serif;
+            padding: 20px 0px 20px 40px;
+            display: block;
+            margin: -30px -30px 10px -30px;
+            color: #FFF;
+            background: #9DC45F;
+            text-shadow: 1px 1px 1px #949494;
+            border-radius: 5px 5px 0px 0px;
+            -webkit-border-radius: 5px 5px 0px 0px;
+            -moz-border-radius: 5px 5px 0px 0px;
+            border-bottom: 1px solid #89AF4C;
+        }
+
+        .smart-green h1 > span {
+            display: block;
+            font-size: 11px;
+            color: #FFF;
+        }
+
+        .smart-green label {
+            display: block;
+            margin: 0px 0px 5px;
+        }
+
+        .smart-green label > span {
+            float: left;
+            margin-top: 10px;
+            color: #5E5E5E;
+        }
+
+        .smart-green input[type="text"], .smart-green input[type="email"], .smart-green textarea, .smart-green select {
+            color: #555;
+            height: 30px;
+            line-height: 15px;
+            width: 100%;
+            padding: 0px 0px 0px 10px;
+            margin-top: 2px;
+            border: 1px solid #E5E5E5;
+            background: #FBFBFB;
+            outline: 0;
+            -webkit-box-shadow: inset 1px 1px 2px rgba(238, 238, 238, 0.2);
+            box-shadow: inset 1px 1px 2px rgba(238, 238, 238, 0.2);
+            font: normal 14px/14px Arial, Helvetica, sans-serif;
+        }
+
+        .smart-green textarea {
+            height: 100px;
+            padding-top: 10px;
+        }
+
+        .smart-green .button {
+            background-color: #9DC45F;
+            border-radius: 5px;
+            -webkit-border-radius: 5px;
+            -moz-border-border-radius: 5px;
+            border: none;
+            padding: 10px 25px 10px 25px;
+            color: #FFF;
+            text-shadow: 1px 1px 1px #949494;
+        }
+
+        .smart-green .button:hover {
+            background-color: #80A24A;
+        }
+
+        .error-msg {
+            color: red;
+            margin-top: 10px;
+        }
+
+        .success-msg {
+            color: #80A24A;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+<form role="form" method="post" class="smart-green">
+    <h1>信息登记
+        <span>请留下你的信息.</span>
+    </h1>
+    <!--弹出信息框-->
+    {% for msg in get_flashed_messages(category_filter=["ok"]) %}
+    <div class="alert alert-success alert-dismissible">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+        <h4><i class="icon fa fa-check"></i> 操作成功</h4>
+        {{ msg }}
+    </div>
+    {% endfor %}
+    {% for msg in get_flashed_messages(category_filter=["err"]) %}
+    <div class="alert alert-danger alert-dismissible">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+        <h4><i class="icon fa fa-ban"></i> 操作失败</h4>
+        {{ msg }}
+    </div>
+    {% endfor %}
+
+    <!--班级-->
+
+    <label>
+        <span>{{ form.class_name.label }}</span>
+        {{ form.class_name }}
+        <!--错误提示-->
+        {% for err in form.class_name.errors %}
+        <div class="col-md-12">
+            <font style="color:red">{{ err }}</font>
+        </div>
+        {% endfor %}
+    </label>
+
+    <!--姓名-->
+
+    <label>
+        <span>{{ form.name.label }}</span>
+        {{ form.name }}
+        <!--错误提示-->
+        {% for err in form.name.errors %}
+        <div class="col-md-12">
+            <font style="color:red">{{ err }}</font>
+        </div>
+        {% endfor %}
+    </label>
+    <!--性别-->
+    <label for="input_name">
+        <span>{{ form.sex.label }}</span>
+        {{ form.sex }}
+        <!--错误提示-->
+        {% for err in form.sex.errors %}
+        <div class="col-md-12">
+            <font style="color:red">{{ err }}</font>
+        </div>
+        {% endfor %}
+    </label>
+    <!--年龄-->
+
+    <label>
+        <span>{{ form.age.label }}</span>
+        {{ form.age }}
+        <!--错误提示-->
+        {% for err in form.age.errors %}
+        <div class="col-md-12">
+            <font style="color:red">{{ err }}</font>
+        </div>
+        {% endfor %}
+    </label>
+    <!--身份证-->
+
+    <label>
+        <span>{{ form.card.label }}</span>
+        {{ form.card }}
+        <!--错误提示-->
+        {% for err in form.card.errors %}
+        <div class="col-md-12">
+            <font style="color:red">{{ err }}</font>
+        </div>
+        {% endfor %}
+    </label>
+    <!--phone-->
+
+    <label>
+        <span>{{ form.phone.label }}</span>
+        {{ form.phone }}
+        <!--错误提示-->
+        {% for err in form.phone.errors %}
+        <div class="col-md-12">
+            <font style="color:red">{{ err }}</font>
+        </div>
+        {% endfor %}
+    </label>
+    <!--qq-->
+
+    <label>
+        <span>{{ form.qq.label }}</span>
+        {{ form.qq }}
+        <!--错误提示-->
+        {% for err in form.qq.errors %}
+        <div class="col-md-12">
+            <font style="color:red">{{ err }}</font>
+        </div>
+        {% endfor %}
+    </label>
+    <!--email-->
+
+    <label>
+        <span>{{ form.email.label }}</span>
+        {{ form.email }}
+        <!--错误提示-->
+        {% for err in form.email.errors %}
+        <div class="col-md-12">
+            <font style="color:red">{{ err }}</font>
+        </div>
+        {% endfor %}
+    </label>
+    <!--学历-->
+
+    <label>
+        <span>{{ form.education.label }}</span>
+        {{ form.education }}
+        <!--错误提示-->
+        {% for err in form.education.errors %}
+        <div class="col-md-12">
+            <font style="color:red">{{ err }}</font>
+        </div>
+        {% endfor %}
+    </label>
+    <!--毕业学校-->
+
+    <label>
+        <span>{{ form.school.label }}</span>
+        {{ form.school }}
+        <!--错误提示-->
+        {% for err in form.school.errors %}
+        <div class="col-md-12">
+            <font style="color:red">{{ err }}</font>
+        </div>
+        {% endfor %}
+    </label>
+    <!--专业-->
+
+    <label>
+        <span>{{ form.specialty.label }}</span>
+        {{ form.specialty }}
+        <!--错误提示-->
+        {% for err in form.specialty.errors %}
+        <div class="col-md-12">
+            <font style="color:red">{{ err }}</font>
+        </div>
+        {% endfor %}
+    </label>
+    <!--家庭联系人-->
+
+    <label>
+        <span>{{ form.family.label }}</span>
+        {{ form.family }}
+        <!--错误提示-->
+        {% for err in form.family.errors %}
+        <div class="col-md-12">
+            <font style="color:red">{{ err }}</font>
+        </div>
+        {% endfor %}
+    </label>
+    <!--家庭号码-->
+
+    <label>
+        <span>{{ form.familyphone.label }}</span>
+        {{ form.familyphone }}
+        <!--错误提示-->
+        {% for err in form.familyphone.errors %}
+        <div class="col-md-12">
+            <font style="color:red">{{ err }}</font>
+        </div>
+        {% endfor %}
+    </label>
+    <!--广州地址-->
+
+    <label>
+        <span>{{ form.guangzhouadd.label }}</span>
+        {{ form.guangzhouadd }}
+        <!--错误提示-->
+        {% for err in form.guangzhouadd.errors %}
+        <div class="col-md-12">
+            <font style="color:red">{{ err }}</font>
+        </div>
+        {% endfor %}
+    </label>
+    <!--家庭住址-->
+
+    <label>
+        <span>{{ form.familyadd.label }}</span>
+        {{ form.familyadd }}
+        <!--错误提示-->
+        {% for err in form.familyadd.errors %}
+        <div class="col-md-12">
+            <font style="color:red">{{ err }}</font>
+        </div>
+        {% endfor %}
+    </label>
+    <!--报名渠道-->
+
+    <label>
+        <span>{{ form.apply.label }}</span>
+        {{ form.apply }}
+        <!--错误提示-->
+        {% for err in form.apply.errors %}
+        <div class="col-md-12">
+            <font style="color:red">{{ err }}</font>
+        </div>
+        {% endfor %}
+    </label>
+    </div>
+    <label>
+        <span>&nbsp;</span>
+        {{ form.submit }}
+        {{ form.csrf_token }}
+    </label>
+</form>
+
+<footer class="main-footer">
+    <div class="pull-right hidden-xs">
+        <b>代号</b> 1.0
+    </div>
+    <strong><a href=""></a></strong>
+</footer>
+
+<script src="{{ url_for('static', filename='admin/plugins/jQuery/jQuery-2.2.0.min.js') }}"></script>
+<script src="{{ url_for('static', filename='admin/bootstrap/js/bootstrap.min.js') }}"></script>
+<script src="{{ url_for('static', filename='admin/plugins/slimScroll/jquery.slimscroll.min.js') }}"></script>
+<script src="{{ url_for('static', filename='admin/plugins/fastclick/fastclick.js') }}"></script>
+<script src="{{ url_for('static', filename='admin/dist/js/app.min.js')}}"></script>
+<script src="{{ url_for('static', filename='admin/dist/js/demo.js')}}"></script>
+<script src="//cdn.bootcss.com/holder/2.9.4/holder.min.js"></script>
+<script src="{{ url_for('static', filename='admin/plugins/datepicker/bootstrap-datepicker.js') }}"></script>
+<script src="{{ url_for('static', filename='admin/plugins/datepicker/locales/bootstrap-datepicker.zh-CN.js') }}" charset="UTF-8"></script>
+
+</body>
+</html>
