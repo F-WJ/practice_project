@@ -9,4 +9,4 @@ df = pd.DataFrame({'col1': ['one', 'one', 'two', 'two', 'two', 'three', 'four'],
 test = df.duplicated()
 
 print(df)
-print(test)
+print(test) 
