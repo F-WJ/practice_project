@@ -15,6 +15,8 @@ SPIDER_MODULES = ['scrapy_kuan.spiders']
 NEWSPIDER_MODULE = 'scrapy_kuan.spiders'
 
 
+
+
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = 'scrapy_kuan (+http://www.yourdomain.com)'
 
@@ -88,3 +90,13 @@ ROBOTSTXT_OBEY = True
 #HTTPCACHE_DIR = 'httpcache'
 #HTTPCACHE_IGNORE_HTTP_CODES = []
 #HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
+
+
+# 数据库
+ITEM_PIPELINES = {
+    'scrapy_kuan.pipelines.MongoPipeline': 300, 
+    }
+MONGODB_SERVER = 'localhost'
+MONGODB_PORT = 27017
+MONGODB_DB = "Kuan"
+MONGODB_COLLECTION = "kuanapp"

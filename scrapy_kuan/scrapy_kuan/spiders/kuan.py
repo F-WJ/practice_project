@@ -13,6 +13,13 @@ headers = {
 
 
 class KuanSpider(scrapy.Spider):
+
+    # 延时爬取设置
+    custom_settings = {
+        "DOWNLOAD_DELAY": 1,   # 默认是0
+        "CONCURRENT_REQUESTS_PER_DOMAIN": 8   # 每秒并发８次
+    }
+
     name = 'kuan'
     allowed_domains = ['www.coolapk.com']
     start_urls = ['http://www.coolapk.com/apk/']
@@ -24,7 +31,7 @@ class KuanSpider(scrapy.Spider):
             url = response.urljoin(url) # 拼接，因为爬取地址是相对地址
             yield scrapy.Request(url, callback=self.parse_url, headers=headers)
         
-        next_page = response.css('').extract_first()
+        next_page = response.css('.pagination li:nth-child(8) a::attr(href)').extract_first()
         url = response.urljoin(next_page)
         yield scrapy.Request(url, callback=self.parse, headers=headers)
         
@@ -32,7 +39,7 @@ class KuanSpider(scrapy.Spider):
     def parse_url(self, response):
         item = KuanItem()
         item['name'] = response.css('.detail_app_title::text').extract_first()
-        print('name:' + item['name'])
+        # print('name:' + item['name'])
         results = self.get_comment(response)
         item['volume'] = results[0]
         item['download'] = results[1]
@@ -50,13 +57,12 @@ class KuanSpider(scrapy.Spider):
         result = re.findall(r'\s+(.*?)\s+/\s+(.*?)下载\s+/\s+(.*?)人关注\s+/\s+(.*?)个评论.*?', messages)
         if result:
             results = list(result[0])
-            print(results)
+            # print(results)
             return results
         
     def get_tags(self, response):
         data = response.css('.apk_left_span2')
         tags = [item.css('::text').extract_first() for item in data]
-        print(tags)
+        # print(tags)
         return tags
-
 
